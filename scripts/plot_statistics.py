@@ -44,19 +44,7 @@ class Output:
     def load(self, fpath, fname):
         if not os.path.exists(fpath + fname):
             return 0
-        if "CC00_Dubins" in fname:
-            self.id = "CC$^{00}$-Dubins"
-        elif "CC0pm_Dubins" in fname:
-            self.id = "CC$^{0\pm}$-Dubins"
-        elif "CCpm0_Dubins" in fname:
-            self.id = "CC$^{\pm0}$-Dubins"
-        elif "CCpmpm_Dubins" in fname:
-            self.id = "CC$^{\pm\pm}$-Dubins"
-        elif "CC_Dubins" in fname:
-            self.id = "CC-Dubins"
-        elif "Dubins" in fname:
-            self.id = "Dubins"
-        elif "CC00_RS" in fname:
+        if "CC00_RS" in fname:
             self.id = "CC$^{00}$-RS"
         elif "HC00_RS" in fname:
             self.id = "HC$^{00}$-RS"
@@ -85,26 +73,6 @@ class Output:
 if __name__ == "__main__":
     # load data
     filepath = "../test/"
-
-    dubins_outputs = []
-    Dubins = Output()
-    CC_Dubins = Output()
-    CC00_Dubins = Output()
-    CC0pm_Dubins = Output()
-    CCpm0_Dubins = Output()
-    CCpmpm_Dubins = Output()
-    if Dubins.load(filepath, "Dubins_stats.csv"):
-        dubins_outputs.append(Dubins)
-    if CCpmpm_Dubins.load(filepath, "CCpmpm_Dubins_stats.csv"):
-        dubins_outputs.append(CCpmpm_Dubins)
-    if CCpm0_Dubins.load(filepath, "CCpm0_Dubins_stats.csv"):
-        dubins_outputs.append(CCpm0_Dubins)
-    if CC0pm_Dubins.load(filepath, "CC0pm_Dubins_stats.csv"):
-        dubins_outputs.append(CC0pm_Dubins)
-    if CC00_Dubins.load(filepath, "CC00_Dubins_stats.csv"):
-        dubins_outputs.append(CC00_Dubins)
-    if CC_Dubins.load(filepath, "CC_Dubins_stats.csv"):
-        dubins_outputs.append(CC_Dubins)
 
     rs_outputs = []
     CC00_RS = Output()
@@ -137,14 +105,6 @@ if __name__ == "__main__":
         print(output.id + ": %.2f ± %.2f" % (np.average(output.comp_time) * 1e6, np.std(output.comp_time) * 1e6))
 
     # path length
-    dubins_path_length_hist = []
-    dubins_path_length_labels = []
-    for output in dubins_outputs:
-        if output.id != "Dubins":
-            rel_path_length = (output.path_length - Dubins.path_length) / Dubins.path_length
-            dubins_path_length_hist.append(rel_path_length)
-            dubins_path_length_labels.append(output.id)
-
     rs_path_length_hist = []
     rs_path_length_labels = []
     for output in rs_outputs:

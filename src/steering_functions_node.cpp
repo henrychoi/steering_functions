@@ -28,26 +28,10 @@
 
 #include <Eigen/Dense>
 
-/*
-#include "steering_functions/dubins_state_space/dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/cc00_dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/cc00_reeds_shepp_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/cc0pm_dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/cc_dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/ccpm0_dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/ccpmpm_dubins_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/hc00_reeds_shepp_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/hc0pm_reeds_shepp_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/hc_reeds_shepp_state_space.hpp"
-#include "steering_functions/hc_cc_state_space/hcpm0_reeds_shepp_state_space.hpp"
-*/
 #include "steering_functions/hc_cc_state_space/hcpmpm_reeds_shepp_state_space.hpp"
 #include "steering_functions/reeds_shepp_state_space/reeds_shepp_state_space.hpp"
 #include "steering_functions/steering_functions.hpp"
 
-/*
-#define FRAME_ID "/world"
-*/
 #define FRAME_ID "world"
 #define DISCRETIZATION 0.1               // [m]
 #define VISUALIZATION_DURATION 2         // [s]
@@ -129,99 +113,12 @@ public:
            pub_text_.getNumSubscribers() == 0 || pub_covariances_.getNumSubscribers() == 0)
       ros::Duration(0.001).sleep();
 
-    // path
-    
-    /*
-    if (path_type_ == "CC_Dubins")
-    {
-      id_ = "1";
-      CC_Dubins_State_Space state_space(kappa_max_, sigma_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "CC00_Dubins")
-    {
-      id_ = "2";
-      CC00_Dubins_State_Space state_space(kappa_max_, sigma_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "CC0pm_Dubins")
-    {
-      id_ = "3";
-      CC0pm_Dubins_State_Space state_space(kappa_max_, sigma_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "CCpm0_Dubins")
-    {
-      id_ = "4";
-      CCpm0_Dubins_State_Space state_space(kappa_max_, sigma_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "CCpmpm_Dubins")
-    {
-      id_ = "5";
-      CCpmpm_Dubins_State_Space state_space(kappa_max_, sigma_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "Dubins")
-    {
-      id_ = "6";
-      Dubins_State_Space state_space(kappa_max_, discretization_, true);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "CC00_RS")
-    {
-      id_ = "7";
-      CC00_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "HC_RS")
-    {
-      id_ = "8";
-      HC_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "HC00_RS")
-    {
-      id_ = "9";
-      HC00_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
-      state_space.set_s call connects to the master 
-      HC0pm_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    else if (path_type_ == "HCpm0_RS")
-    {
-      id_ = "11";
-      HCpm0_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    */
-    //else if (path_type_ == "HCpmpm_RS")
-    if (path_type_ == "HCpmpm_RS")
     {
       id_ = "12";
       HCpmpm_Reeds_Shepp_State_Space state_space(kappa_max_, sigma_max_, discretization_);
       state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
       path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
     }
-    /*
-    else if (path_type_ == "RS")
-    {
-      id_ = "13";
-      Reeds_Shepp_State_Space state_space(kappa_max_, discretization_);
-      state_space.set_filter_parameters(motion_noise_, measurement_noise_, controller_);
-      path_ = state_space.get_path_with_covariance(state_start_, state_goal_);
-    }
-    */
 
     // nav_path
     nav_path_.header.frame_id = frame_id_;
@@ -608,82 +505,11 @@ int main(int argc, char** argv)
     goal_wout_curv.kappa = 0.0;
     goal_wout_curv.d = goal.d;
 
-    /*
-    PathClass cc_dubins_path("CC_Dubins", start, goal, robot.kappa_max_, robot.sigma_max_);
-    PathClass cc00_dubins_path("CC00_Dubins", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass cc0pm_dubins_path("CC0pm_Dubins", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass ccpm0_dubins_path("CCpm0_Dubins", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass ccpmpm_dubins_path("CCpmpm_Dubins", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass dubins_path("Dubins", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass cc00_rs_path("CC00_RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass hc_rs_path("HC_RS", start, goal, robot.kappa_max_, robot.sigma_max_);
-    PathClass hc00_rs_path("HC00_RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass hc0pm_rs_path("HC0pm_RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    PathClass hcpm0_rs_path("HCpm0_RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    */
-
     PathClass hcpmpm_rs_path("HCpmpm_RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-
-    /*
-    PathClass rs_path("RS", start_wout_curv, goal_wout_curv, robot.kappa_max_, robot.sigma_max_);
-    */
-
-    // visualize
-    /*
-    cc_dubins_path.visualize();
-    robot.visualize(cc_dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    cc00_dubins_path.visualize();
-    robot.visualize(cc00_dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    cc0pm_dubins_path.visualize();
-    robot.visualize(cc0pm_dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    ccpm0_dubins_path.visualize();
-    robot.visualize(ccpm0_dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    ccpmpm_dubins_path.visualize();
-    robot.visualize(ccpmpm_dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    dubins_path.visualize();
-    robot.visualize(dubins_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    cc00_rs_path.visualize();
-    robot.visualize(cc00_rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    hc_rs_path.visualize();
-    robot.visualize(hc_rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    hc00_rs_path.visualize();
-    robot.visualize(hc00_rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    hc0pm_rs_path.visualize();
-    robot.visualize(hc0pm_rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    hcpm0_rs_path.visualize();
-    robot.visualize(hcpm0_rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-    */
 
     hcpmpm_rs_path.visualize();
     robot.visualize(hcpmpm_rs_path.path_);
     ros::Duration(VISUALIZATION_DURATION).sleep();
-
-    /*
-    rs_path.visualize();
-    robot.visualize(rs_path.path_);
-    ros::Duration(VISUALIZATION_DURATION).sleep();
-    */
   }
   return 0;
 }
