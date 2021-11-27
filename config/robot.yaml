@@ -17,6 +17,7 @@ wheel_base:   0.267  # [m]
 track_width:  0.484  # [m]
 wheel_radius: 0.060  # [m]
 wheel_width:  0.042  # [m]
+rear_track_width: 0.303  # [m]
 
 #motion_noise: {alpha1: 0,  alpha2: 0,
 #               alpha3: 0, alpha4: 0}

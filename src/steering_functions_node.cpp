@@ -269,6 +269,10 @@ public:
   double wheel_base_;
   double track_width_;
   geometry_msgs::Point wheel_fl_pos_, wheel_fr_pos_;
+  //////////
+  double rear_track_width_;
+  geometry_msgs::Point wheel_rl_pos_, wheel_rr_pos_;
+  //////////
   vector<geometry_msgs::Point> footprint_;
   vector<geometry_msgs::Point> wheel_;
   double wheel_radius_;
@@ -304,10 +308,19 @@ public:
     // wheel
     nh.getParam("wheel_base", wheel_base_);
     nh.getParam("track_width", track_width_);
+    //////////
+    nh.getParam("rear_track_width", rear_track_width_);
+    //////////
     wheel_fl_pos_.x = wheel_base_;
     wheel_fl_pos_.y = track_width_ / 2.0;
     wheel_fr_pos_.x = wheel_base_;
     wheel_fr_pos_.y = -track_width_ / 2.0;
+    //////////
+    wheel_rl_pos_.x = 0.0;
+    wheel_rl_pos_.y = rear_track_width_ / 2.0;
+    wheel_rr_pos_.x = 0.0;
+    wheel_rr_pos_.y = -rear_track_width_ / 2.0;
+    //////////
 
     nh.getParam("wheel_radius", wheel_radius_);
     nh.getParam("wheel_width", wheel_width_);
@@ -346,7 +359,8 @@ public:
     marker_wheels_.action = visualization_msgs::Marker::ADD;
     marker_wheels_.id = 2;
     marker_wheels_.type = visualization_msgs::Marker::LINE_LIST;
-    marker_wheels_.scale.x = 0.03;
+    //marker_wheels_.scale.x = 0.03;
+    marker_wheels_.scale.x = 0.01;
     marker_wheels_.color.r = 0.9;
     marker_wheels_.color.g = 0.9;
     marker_wheels_.color.b = 0.9;
@@ -375,6 +389,11 @@ public:
       double steer_angle_fl, steer_angle_fr;
       vector<geometry_msgs::Point> wheel_fl, wheel_fr;
       vector<geometry_msgs::Point> oriented_wheel_fl, oriented_wheel_fr;
+      //////////
+      double steer_angle_rl, steer_angle_rr;
+      vector<geometry_msgs::Point> wheel_rl, wheel_rr;
+      vector<geometry_msgs::Point> oriented_wheel_rl, oriented_wheel_rr;
+      //////////
       vector<geometry_msgs::Point> oriented_footprint;
 
       // steering angle
@@ -388,17 +407,31 @@ public:
         steer_angle_fl = 0.0;
         steer_angle_fr = 0.0;
       }
+      //////////
+      steer_angle_rl = 0.0;
+      steer_angle_rr = 0.0;
+      //////////
 
       // transform wheels and footprint
       costmap_2d::transformFootprint(wheel_fl_pos_.x, wheel_fl_pos_.y, steer_angle_fl, wheel_, wheel_fl);
       costmap_2d::transformFootprint(wheel_fr_pos_.x, wheel_fr_pos_.y, steer_angle_fr, wheel_, wheel_fr);
       costmap_2d::transformFootprint(state.state.x, state.state.y, state.state.theta, wheel_fl, oriented_wheel_fl);
       costmap_2d::transformFootprint(state.state.x, state.state.y, state.state.theta, wheel_fr, oriented_wheel_fr);
+      //////////
+      costmap_2d::transformFootprint(wheel_rl_pos_.x, wheel_rl_pos_.y, steer_angle_rl, wheel_, wheel_rl);
+      costmap_2d::transformFootprint(wheel_rr_pos_.x, wheel_rr_pos_.y, steer_angle_rr, wheel_, wheel_rr);
+      costmap_2d::transformFootprint(state.state.x, state.state.y, state.state.theta, wheel_rl, oriented_wheel_rl);
+      costmap_2d::transformFootprint(state.state.x, state.state.y, state.state.theta, wheel_rr, oriented_wheel_rr);
+      //////////
       costmap_2d::transformFootprint(state.state.x, state.state.y, state.state.theta, footprint_, oriented_footprint);
 
       polygon_to_marker(oriented_footprint, marker_chassis_);
       polygon_to_marker(oriented_wheel_fl, marker_wheels_);
       polygon_to_marker(oriented_wheel_fr, marker_wheels_);
+      //////////
+      polygon_to_marker(oriented_wheel_rl, marker_wheels_);
+      polygon_to_marker(oriented_wheel_rr, marker_wheels_);
+      //////////
 
       // animate
       if (animate_)
